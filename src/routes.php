@@ -17,7 +17,7 @@ use XHGui\Twig\TwigExtension;
 /** @var App $app */
 /** @var ServiceContainer $di */
 
-$app->error(static function (Exception $e) use ($di, $app) {
+$app->error(static function (Throwable $e) use ($di, $app) {
     /** @var Twig $view */
     $view = $di['view'];
     $view->parserOptions['cache'] = false;
@@ -76,7 +76,7 @@ $app->get('/run/delete_all', static function () use ($di, $app) {
     $controller->deleteAllForm();
 })->setName('run.deleteAll.form');
 
-$app->post('/run/delete_all', static function () use ($di, $app) {
+$app->post('/run/delete_all', static function () use ($di) {
     /** @var RunController $controller */
     $controller = $di['runController'];
     $controller->deleteAllSubmit();

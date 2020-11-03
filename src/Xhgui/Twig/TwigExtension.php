@@ -119,7 +119,7 @@ class TwigExtension extends Twig_Extension
 
     public function makePercent($value, $total)
     {
-        $value = (false === empty($total)) ? $value / $total : 0;
+        $value = false === empty($total) ? $value / $total : 0;
 
         return $this->formatPercent($value);
     }

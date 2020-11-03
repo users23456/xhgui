@@ -2,11 +2,11 @@
 
 namespace XHGui\Controller;
 
-use Exception;
 use InvalidArgumentException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Slim as App;
+use Throwable;
 use XHGui\AbstractController;
 use XHGui\Saver\SaverInterface;
 
@@ -35,7 +35,7 @@ class ImportController extends AbstractController
         } catch (InvalidArgumentException $e) {
             $result = ['error' => true, 'message' => $e->getMessage()];
             $response->setStatus(401);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $result = ['error' => true, 'message' => $e->getMessage()];
             $response->setStatus(500);
         }
