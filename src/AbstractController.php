@@ -42,6 +42,11 @@ abstract class AbstractController
         return $router->pathFor($name, $params);
     }
 
+    protected function redirect($url, $status = 302): void
+    {
+        $this->app->redirect($url, $status);
+    }
+
     protected function config(string $key)
     {
         return $this->app->getContainer()->get($key);
