@@ -5,6 +5,7 @@ namespace XHGui;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\App;
+use Slim\Router;
 use Slim\Views\Twig;
 
 abstract class AbstractController
@@ -33,7 +34,12 @@ abstract class AbstractController
 
     protected function urlFor(string $name, array $params = []): string
     {
-        return $this->app->urlFor($name, $params);
+        /** @var ContainerInterface $container */
+        $container = $this->app->getContainer();
+        /** @var Router $router */
+        $router = $container->get('router');
+
+        return $router->pathFor($name, $params);
     }
 
     protected function config(string $key)
