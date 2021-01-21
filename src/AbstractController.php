@@ -44,7 +44,12 @@ abstract class AbstractController
 
     protected function redirect($url, $status = 302): void
     {
-        $this->app->redirect($url, $status);
+        /** @var ContainerInterface $container */
+        $container = $this->app->getContainer();
+        /** @var ResponseInterface $response */
+        $response = $container->get('response');
+
+        $response->withStatus($status)->withHeader('Location', $url);
     }
 
     protected function config(string $key)
