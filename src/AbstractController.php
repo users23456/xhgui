@@ -31,6 +31,11 @@ abstract class AbstractController
         $renderer->render($response, $template, $data);
     }
 
+    protected function urlFor(string $name, array $params = []): string
+    {
+        return $this->app->urlFor($name, $params);
+    }
+
     protected function config(string $key)
     {
         return $this->app->getContainer()->get($key);
