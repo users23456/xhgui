@@ -157,7 +157,7 @@ class RunController extends AbstractController
         // Delete the profile run.
         $this->searcher->delete($id);
 
-        $this->app->flash('success', 'Deleted profile ' . $id);
+        $this->flash('success', 'Deleted profile ' . $id);
 
         $this->app->redirect($this->app->urlFor('home'));
     }
@@ -172,7 +172,7 @@ class RunController extends AbstractController
         // Delete all profile runs.
         $this->searcher->truncate();
 
-        $this->app->flash('success', 'Deleted all profiles');
+        $this->flash('success', 'Deleted all profiles');
 
         $this->app->redirect($this->app->urlFor('home'));
     }
