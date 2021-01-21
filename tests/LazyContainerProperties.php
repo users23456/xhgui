@@ -9,11 +9,11 @@ use Pimple\ServiceProviderInterface;
 use Slim\App;
 use Slim\Http\Environment;
 use Slim\Http\Request;
-use Slim\Http\Response;
 use Slim\Views\Twig;
 use XHGui\Application;
 use XHGui\Controller;
 use XHGui\RequestProxy;
+use XHGui\ResponseProxy;
 use XHGui\Saver\SaverInterface;
 use XHGui\Searcher\MongoSearcher;
 use XHGui\Searcher\SearcherInterface;
@@ -33,7 +33,7 @@ trait LazyContainerProperties
     protected $mongodb;
     /** @var RequestProxy */
     protected $request;
-    /** @var Response */
+    /** @var ResponseProxy */
     protected $response;
     /** @var Controller\RunController */
     protected $runs;
@@ -145,9 +145,9 @@ trait LazyContainerProperties
         return new RequestProxy(Request::createFromEnvironment($this->env));
     }
 
-    protected function getResponse(): Response
+    protected function getResponse(): ResponseProxy
     {
-        return $this->di['app']->getContainer()->get('response');
+        return new ResponseProxy($this->di['app']->getContainer()->get('response'));
     }
 
     protected function getSearcher()

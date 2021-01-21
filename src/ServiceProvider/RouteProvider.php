@@ -9,6 +9,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use XHGui\Controller;
 use XHGui\RequestProxy;
+use XHGui\ResponseProxy;
 
 class RouteProvider implements ServiceProviderInterface
 {
@@ -55,7 +56,7 @@ class RouteProvider implements ServiceProviderInterface
             // https://github.com/perftools/xhgui/issues/261
             $response = $response->withHeader('Cache-Control', 'public, max-age=0');
 
-            $controller->index($this['request.proxy'], $response);
+            $controller->index($this['request.proxy'], new ResponseProxy($response));
         })->setName('home');
 
         $app->get('/run/view', function (Request $request, Response $response) use ($di): void {
@@ -70,7 +71,7 @@ class RouteProvider implements ServiceProviderInterface
 
             /** @var Controller\RunController $controller */
             $controller = $di[Controller\RunController::class];
-            $controller->view(new RequestProxy($request), $response);
+            $controller->view(new RequestProxy($request), new ResponseProxy($response));
         })->setName('run.view');
 
         $app->get('/run/delete', function (Request $request) use ($di): void {
@@ -127,16 +128,18 @@ class RouteProvider implements ServiceProviderInterface
             $controller->callgraph(new RequestProxy($request));
         })->setName('run.callgraph');
 
-        $app->get('/run/callgraph/data', function (Request $request, Response $response) use ($di): void {
+        $app->get('/run/callgraph/data', function (Request $request, Response $response) use ($di): Response {
             /** @var Controller\RunController $controller */
             $controller = $di[Controller\RunController::class];
-            $controller->callgraphData(new RequestProxy($request), $response);
+
+            return $controller->callgraphData(new RequestProxy($request), new ResponseProxy($response));
         })->setName('run.callgraph.data');
 
-        $app->get('/run/callgraph/dot', function (Request $request, Response $response) use ($di): void {
+        $app->get('/run/callgraph/dot', function (Request $request, Response $response) use ($di): Response {
             /** @var Controller\RunController $controller */
             $controller = $di[Controller\RunController::class];
-            $controller->callgraphDataDot(new RequestProxy($request), $response);
+
+            return $controller->callgraphDataDot(new RequestProxy($request), new ResponseProxy($response));
         })->setName('run.callgraph.dot');
 
         // Import route
