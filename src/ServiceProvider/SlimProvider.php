@@ -4,7 +4,6 @@ namespace XHGui\ServiceProvider;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Psr\Container\ContainerInterface;
 use Slim\App;
 use Slim\Container as SlimContainer;
 use Slim\Http\Uri;
@@ -24,27 +23,16 @@ class SlimProvider implements ServiceProviderInterface
     /**
      * Create the Slim app
      */
-    public function register(Container $c): void
+    public function register(Container $container): void
     {
-        $c['app'] = function ($c) {
+        $container['app'] = function ($c) {
             if ($c['config']['timezone']) {
                 date_default_timezone_set($c['config']['timezone']);
             }
 
-//            $app = new App($c['config']);
-            $app = $this->app;
-            $this->registerSlimContainer($app->getContainer());
-
-            /*
-            $view = $c['view'];
-            */
-
-            return $app;
+            return $this->app;
         };
-    }
 
-    private function registerSlimContainer(ContainerInterface $container): void
-    {
         $container['view.class'] = Twig::class;
         $container['view'] = static function (SlimContainer $container) {
             $view = new $container['view.class']($container['template_dir'], [
