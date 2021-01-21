@@ -1,7 +1,8 @@
 name: Docker Image
 
 on:
-  pull_request:
+  - pull_request
+  - push
 
 jobs:
   tests:
