@@ -50,8 +50,9 @@ class SlimProvider implements ServiceProviderInterface
         $container[TwigExtension::class] = static function (SlimContainer $container) {
             $router = $container['router'];
             $uri = $container[Uri::class];
+            $pathPrefix = $container['path.prefix'];
 
-            return new TwigExtension($router, $uri);
+            return new TwigExtension($router, $uri, $pathPrefix);
         };
 
         $container[Uri::class] = static function (SlimContainer $container) {
