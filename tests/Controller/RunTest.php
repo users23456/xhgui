@@ -90,7 +90,7 @@ class RunTest extends TestCase
             'QUERY_STRING' => 'url=%2Ftasks',
         ]);
 
-        $this->runs->url($this->app->request(), $this->app->response());
+        $this->runs->url($this->request);
 
         $result = $this->view->all();
         $this->assertEquals('url.view', $result['base_url']);
@@ -157,7 +157,7 @@ class RunTest extends TestCase
         ]);
 
         $this->runs->callgraphData($this->request, $this->response);
-        $response = $this->app->response();
+        $response = $this->response;
 
         $this->assertEquals('application/json', $response['Content-Type']);
         $this->assertStringStartsWith('{"', $response->body());
