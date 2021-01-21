@@ -28,6 +28,11 @@ class WatchTest extends TestCase
 
     public function testPostAdd(): void
     {
+        $this->env = Environment::mock([
+            'REQUEST_METHOD' => 'POST',
+            'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
+        ]);
+
         $this->searcher->truncateWatches();
         $_POST = [
             'watch' => [
