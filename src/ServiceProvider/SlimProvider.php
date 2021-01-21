@@ -6,6 +6,7 @@ use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Slim\App;
 use Slim\Container as SlimContainer;
+use Slim\Flash\Messages;
 use Slim\Http\Uri;
 use Slim\Views\Twig;
 use XHGui\RequestProxy;
@@ -31,6 +32,10 @@ class SlimProvider implements ServiceProviderInterface
             }
 
             return $this->app;
+        };
+
+        $container['flash'] = static function () {
+            return new Messages();
         };
 
         $container['view.class'] = Twig::class;
