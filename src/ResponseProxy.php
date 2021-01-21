@@ -2,10 +2,11 @@
 
 namespace XHGui;
 
+use ArrayAccess;
 use LogicException;
 use Slim\Http\Response;
 
-class ResponseProxy
+class ResponseProxy implements ArrayAccess
 {
     /** @var Response */
     private $response;
@@ -47,5 +48,25 @@ class ResponseProxy
     public function __isset($name): void
     {
         throw new LogicException('Unsupported call to __isset()');
+    }
+
+    public function offsetSet($name, $value): void
+    {
+        $this->response = $this->response->withHeader($name, $value);
+    }
+
+    public function offsetExists($offset): void
+    {
+        throw new LogicException('Unsupported call to offsetExists()');
+    }
+
+    public function offsetGet($offset)
+    {
+        throw new LogicException('Unsupported call to offsetGet()');
+    }
+
+    public function offsetUnset($offset): void
+    {
+        throw new LogicException('Unsupported call to offsetUnset()');
     }
 }
