@@ -14,7 +14,7 @@ class PdoStorageProvider implements ServiceProviderInterface
 {
     public function register(Container $app): void
     {
-        $app['pdo'] = static function ($app) {
+        $app[PDO::class] = static function ($app) {
             if (!class_exists(PDO::class)) {
                 throw new RuntimeException('Required extension ext-pdo is missing');
             }
@@ -44,7 +44,7 @@ class PdoStorageProvider implements ServiceProviderInterface
         };
 
         $app[PdoRepository::class] = static function ($app) {
-            return new PdoRepository($app['pdo'], $app['config']['pdo']['table']);
+            return new PdoRepository($app[PDO::class], $app['config']['pdo']['table']);
         };
 
         $app['searcher.pdo'] = static function ($app) {
