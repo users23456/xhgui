@@ -5,6 +5,7 @@ namespace XHGui;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\App;
+use Slim\Flash\Messages;
 use Slim\Router;
 use Slim\Views\Twig;
 
@@ -54,7 +55,12 @@ abstract class AbstractController
 
     protected function flash(string $key, $value): void
     {
-        $this->app->flash($key, $value);
+        /** @var ContainerInterface $container */
+        $container = $this->app->getContainer();
+        /** @var Messages $flash */
+        $flash = $container->get('flash');
+
+        $flash->addMessage($key, $value);
     }
 
     protected function config(string $key)
