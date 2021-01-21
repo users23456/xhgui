@@ -26,4 +26,9 @@ class RequestProxy
     {
         return $this->request->getParsedBodyParam($key, $default);
     }
+
+    public function getBody()
+    {
+        return $this->request->getParsedBody();
+    }
 }
