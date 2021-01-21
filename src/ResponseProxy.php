@@ -60,9 +60,9 @@ class ResponseProxy implements ArrayAccess
         throw new LogicException('Unsupported call to offsetExists()');
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($name): string
     {
-        throw new LogicException('Unsupported call to offsetGet()');
+        return $this->response->getHeaderLine($name);
     }
 
     public function offsetUnset($offset): void
