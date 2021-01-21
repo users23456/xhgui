@@ -27,6 +27,13 @@ class ResponseProxy
         return $this->response;
     }
 
+    public function setStatus($code): Response
+    {
+        $this->response = $this->response->withStatus($code);
+
+        return $this->response;
+    }
+
     public function __set($name, $value): void
     {
         $this->response = $this->response->withHeader($name, $value);
