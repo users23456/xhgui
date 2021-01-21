@@ -21,11 +21,13 @@ class ResponseProxy implements ArrayAccess
         return $this->response;
     }
 
-    public function body($data): Response
+    public function body($data = null): string
     {
-        $this->response->write($data);
+        if ($data !== null) {
+            $this->response->write($data);
+        }
 
-        return $this->response;
+        return (string)$this->response->getBody();
     }
 
     public function setStatus($code): Response
