@@ -52,6 +52,11 @@ abstract class AbstractController
         $response->withStatus($status)->withHeader('Location', $url);
     }
 
+    protected function flash(string $key, $value): void
+    {
+        $this->app->flash($key, $value);
+    }
+
     protected function config(string $key)
     {
         return $this->app->getContainer()->get($key);
