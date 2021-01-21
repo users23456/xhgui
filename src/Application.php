@@ -2,24 +2,18 @@
 
 namespace XHGui;
 
-use Pimple\Container;
 use Slim\App;
+use Slim\Container;
 use XHGui\Saver\SaverInterface;
 
-class Application extends Container
+class Application
 {
+    /** @var App */
+    private $app;
     /** @var bool */
     private $booted = false;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->register(new ServiceProvider\ServiceProvider());
-        $this->register(new ServiceProvider\ConfigProvider());
-        $this->register(new ServiceProvider\PdoStorageProvider());
-        $this->register(new ServiceProvider\MongoStorageProvider());
-        $this->register(new ServiceProvider\SlimProvider());
-    }
+    /** @var Container */
+    private $container;
 
     public function run(): void
     {
@@ -29,7 +23,11 @@ class Application extends Container
     public function boot(): self
     {
         if (!$this->booted) {
-            $this->register(new ServiceProvider\RouteProvider());
+            $container = $this->getContainer();
+            $app = $this->getSlim();
+            $container->register(new ServiceProvider\RouteProvider($app));
+            $container->register(new ServiceProvider\SlimProvider($app));
+
             $this->booted = true;
         }
 
@@ -38,11 +36,35 @@ class Application extends Container
 
     public function getSlim(): App
     {
-        return $this['app'];
+        if (!$this->app) {
+            $this->app = new App($this->getContainer());
+        }
+
+        return $this->app;
     }
 
     public function getSaver(): SaverInterface
     {
-        return $this['saver'];
+        return $this->getContainer()['saver'];
+    }
+
+    public function getContainer(): Container
+    {
+        if (!$this->container) {
+            $container = new Container(Config::boot());
+            $this->container = $this->register($container);
+        }
+
+        return $this->container;
+    }
+
+    private function register(Container $container): Container
+    {
+        $container->register(new ServiceProvider\ServiceProvider());
+        $container->register(new ServiceProvider\PdoStorageProvider());
+        $container->register(new ServiceProvider\MongoStorageProvider());
+        $container->register(new ServiceProvider\ConfigProvider());
+
+        return $container;
     }
 }

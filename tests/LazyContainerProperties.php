@@ -77,15 +77,16 @@ trait LazyContainerProperties
 
     protected function getDi()
     {
-        $di = new Application();
+        $app = new Application();
+        $di = $app->getContainer();
 
         // Use a test databases
         // TODO: do the same for PDO. currently PDO uses DSN syntax and has too many variations
         $di['mongodb.database'] = 'test_xhgui';
 
-        /** @var \Slim\Container $container */
-        $container = $di['app']->getContainer();
-        $container->register(new class($this) implements ServiceProviderInterface {
+        $app->boot();
+
+        $di->register(new class($this) implements ServiceProviderInterface {
             private $ctx;
 
             public function __construct($ctx) {
@@ -100,8 +101,6 @@ trait LazyContainerProperties
                 };
             }
         });
-
-        $di->boot();
 
         return $di;
     }

@@ -14,6 +14,13 @@ use XHGui\Twig\TwigExtension;
 
 class SlimProvider implements ServiceProviderInterface
 {
+    /** @var App */
+    private $app;
+
+    public function __construct(App $app) {
+        $this->app = $app;
+    }
+
     /**
      * Create the Slim app
      */
@@ -24,7 +31,8 @@ class SlimProvider implements ServiceProviderInterface
                 date_default_timezone_set($c['config']['timezone']);
             }
 
-            $app = new App($c['config']);
+//            $app = new App($c['config']);
+            $app = $this->app;
             $this->registerSlimContainer($app->getContainer());
 
             /*

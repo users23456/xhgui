@@ -12,9 +12,16 @@ use XHGui\RequestProxy;
 
 class RouteProvider implements ServiceProviderInterface
 {
+    /** @var App */
+    private $app;
+
+    public function __construct(App $app) {
+        $this->app = $app;
+    }
+
     public function register(Container $di): void
     {
-        $this->registerRoutes($di, $di['app']);
+        $this->registerRoutes($di, $this->app);
         $this->registerControllers($di);
     }
 
