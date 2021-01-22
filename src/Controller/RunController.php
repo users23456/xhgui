@@ -159,7 +159,7 @@ class RunController extends AbstractController
 
         $this->flash('success', 'Deleted profile ' . $id);
 
-        $this->app->redirect($this->urlFor('home'));
+        $this->redirect($this->urlFor('home'));
     }
 
     public function deleteAllForm(): void
@@ -174,7 +174,7 @@ class RunController extends AbstractController
 
         $this->flash('success', 'Deleted all profiles');
 
-        $this->app->redirect($this->urlFor('home'));
+        $this->redirect($this->urlFor('home'));
     }
 
     public function url(Request $request): void
