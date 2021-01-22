@@ -37,6 +37,6 @@ class WatchController extends AbstractController
         if ($saved) {
             $this->flash('success', 'Watch functions updated.');
         }
-        $this->app->redirect($this->app->urlFor('watch.list'));
+        $this->redirect($this->urlFor('watch.list'));
     }
 }
